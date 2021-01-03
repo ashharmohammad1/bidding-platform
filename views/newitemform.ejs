@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="/style/login.css">
+    <title>Login to Bidding Platform</title>
+</head>
+
+<body>
+    <h1>hello
+
+    </h1>
+    <div class="mycontainer shadow-sm p-3 mb-5 bg-white rounded">
+
+        <div class="jumbotron jumbotron-fluid" style="background-color:#5cb85c;color:white ;">
+            <div class="container">
+                <h1 class="display-4">STUDENT'S TRADING PLATFORM</h1>
+            </div>
+        </div>
+        <div class="mycontainer">
+            <div class="row">
+                <div class="container mycontainer2 shadow-sm p-3 mb-5 bg-white rounded col">
+                    <form action="/<%=user%>/inventory" method="POST" id="form1">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">LABEL:</label>
+                            <input type="text" class="form-control" id="exampleInputEmail1" name="item_name"
+                                aria-describedby="emailHelp" placeholder="Enter a name for ypur item">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Description:</label>
+                            <input type="text" class="form-control" name="description" id="exampleInputPassword1"
+                                placeholder="details">
+                        </div>
+                        <div class="form-group">
+                            <label for="type">TYPE:</label>
+                            <select form="form1" name="type" id="type">
+                                <option value="furniture">Furniture</option>
+                                <option value="wardrobe">wardrobe</option>
+                                <option value="stationary">stationary</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="base_value">base_value:</label>
+                            <input type="number" class="form-control" name="base_value" id="base_value"
+                                placeholder="starting price">
+
+                        <button type="submit" class="btn btn-success " style="margin: auto;">ADD!</button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="/style/signup.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container shadow-sm p-3 mb-5 bg-white rounded col">
+        <h4><%=item.item_name%></h4>
+        <p><%=item.description%></p>
+        <p><%=item.type%></p>
+        <h3><%=item.base_value%></h3>
+        <p>hello</p>
+        <button class="btn btn-success" onclick="dispform()">EDIT!</button>
+    </div>
+    <div id="myform">
+        <!-- <form name="editform" method="POST" action="/<%=user%>/inventory/<%=item.itemid%>/edit">
+            <label for="name">Enter new name</label>
+            <input type="text" name="name" id="name">
+            <label for="desc">Enter your description</label>
+            <input type="text" name="desc" id="desc">
+            <button type="submit">go!</button> -->
+            <!-- <button onclick="submitform()"></button> -->
+
+        <!-- </form> -->
+        <div class="container mycontainer2 shadow-sm p-3 mb-5 bg-white rounded col">
+            <form action="/<%=user%>/inventory/<%=item.itemid%>/edit" method="POST" id="form1">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">LABEL:</label>
+                    <input type="text" class="form-control" id="exampleInputEmail1" name="item_name"
+                        aria-describedby="emailHelp" value="<%=item.item_name%>">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Description:</label>
+                    <input type="text" class="form-control" name="description" id="exampleInputPassword1"
+                        value="<%=item.description%>">
+                </div>
+                <div class="form-group">
+                    <label for="type">TYPE:</label>
+                    <select form="form1" name="type" id="type" value="<%=item.type%>">
+                        <option value="furniture">Furniture</option>
+                        <option value="wardrobe">wardrobe</option>
+                        <option value="stationary">stationary</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="base_value">base_value:</label>
+                    <input type="number" class="form-control" name="base_value" id="base_value"
+                        value=<%=item.base_value%>>
+
+                <button  class="btn btn-success " style="margin: auto;" >submit edit!</button>
+
+            </form>
+        </div>
+    </div>
+</body>
+<script>
+var form=document.getElementById("myform");
+form.style.display='none';
+function dispform(){
+    form.style.display='flex'
+}
+</script>
+</html>

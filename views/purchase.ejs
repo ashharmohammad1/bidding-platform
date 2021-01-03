@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="/style/signup.css">
+    <title>Document</title>
+</head>
+<style>
+    .hidden{
+        display:none;
+    }
+</style>
+<body>
+    <h1>hello</h1>
+    <div class="container">
+        <%list.forEach(function(item){%>
+            <li>
+                <h6><%=item.item_name%></h6>
+                <span>posted by : <em><%=item.userid%></em></span>
+                <h4>base value: <%=item.base_value%></h4>
+                <button class="btn btn-success " onclick="placing('<%=item.itemid%>')">PLace an offer</button>
+                <div class="hidden" id="<%=item.itemid%>">
+                    <input type="number" name="value" id="value" placeholder="Enter your offer">
+                    <button class="btn btn-success" onclick="placing2('<%=item.itemid%>')">place!</button>
+                    <button class="btn btn-succes" onclick="hide('<%=item.itemid%>')">CANCEL</button>
+                </div>
+            </li>
+            <%});%>
+    </div>
+</body>
+<script>
+    function placing(variable){
+        ele=document.getElementById(variable)
+        ele.style.display="block"
+    }
+    function hide(variable){
+        ele=document.getElementById(variable)
+        ele.style.display="none"
+    }
+
+    function placing2(itemid){
+        alert("kaam baki")
+    } 
+</script>
+</html>
