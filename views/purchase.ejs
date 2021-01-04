@@ -20,11 +20,13 @@
             <li>
                 <h6><%=item.item_name%></h6>
                 <span>posted by : <em><%=item.userid%></em></span>
-                <h4>base value: <%=item.base_value%></h4>
+                <h4 id="<%=item.market_value%>">market value: <%=item.market_value%></h4>
                 <button class="btn btn-success " onclick="placing('<%=item.itemid%>')">PLace an offer</button>
                 <div class="hidden" id="<%=item.itemid%>">
-                    <input type="number" name="value" id="value" placeholder="Enter your offer">
-                    <button class="btn btn-success" onclick="placing2('<%=item.itemid%>')">place!</button>
+                    <form action="/<%=user%>/purchase/newbid/<%=item.itemid%>" method="POST" id ="placingform">
+                        <input type="number" min="<%=item.market_value%>+1" name="value" id="value" placeholder="Enter your offer">
+                        <input type="submit" class="btn btn-success" value="submit">
+                    </form>
                     <button class="btn btn-succes" onclick="hide('<%=item.itemid%>')">CANCEL</button>
                 </div>
             </li>
@@ -41,8 +43,7 @@
         ele.style.display="none"
     }
 
-    function placing2(itemid){
-        alert("kaam baki")
-    } 
+
+
 </script>
 </html>

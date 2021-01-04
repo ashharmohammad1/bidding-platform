@@ -133,14 +133,13 @@ app.post('/:user/inventory',function(req,res){
          item_name:req.body.item_name,
          description:req.body.description,
          type:req.body.type,
-         base_value: req.body.base_value
+         market_value: req.body.market_value
      }
      sql="insert into item set ?"
      db.query(sql,item,function(err, result){
          if(err)
             console.log(err)
         else{
-            console.log(result)
             res.redirect("/"+user+"/inventory")
         }
      })
@@ -151,18 +150,27 @@ app.post('/:user/inventory',function(req,res){
 //items detail page
 app.get('/:user/inventory/:itemid', function (req, res) {
     var itemid=req.params.itemid
+    var bids,it;
     var user=req.params.user
     sql="select * from item where  itemid=?"
     db.query(sql,itemid,function(err,result){
         if(err)
         console.log(err)
         else{
-            console.log(result)
-            item= result[0]
-            console.log(item)
-            res.render("item.ejs",{item: item,user: user})
+            // console.log(result)
+            it= result[0]
+            console.log(it)
+            sql1="select * from bid where itemid=? order by value desc"
+            db.query(sql1,itemid,function(err,results1){
+                if(err)
+                console.log(err)
+                else{
+                bids=results1
+                // console.log(bids)
+                res.render("item.ejs",{item: it,bids:bids,user: user})}
+            });
         }
-    })
+    });
 });
 
 //item eidt form submission:
@@ -172,10 +180,10 @@ app.post("/:user/inventory/:itemid/edit",function(req,res){
     item_name =req.body.item_name,
     description=req.body.description,
     type=req.body.type,
-    base_value= req.body.base_value
+    market_value= req.body.market_value
     user=req.params.user
-    variables=[item_name,description,type,base_value,user,itemid]
-    sql=" update item set item_name=?,description=?,type=?,base_value=? where userid=? and itemid=? "
+    variables=[item_name,description,type,market_value,user,itemid]
+    sql=" update item set item_name=?,description=?,type=?,market_value=? where userid=? and itemid=? "
 
     db.query(sql,variables,function(err,result){
         if(err)
@@ -183,28 +191,95 @@ app.post("/:user/inventory/:itemid/edit",function(req,res){
         else{
             res.redirect("/"+user+"/inventory")
         }
-    })
-
-    
+    })  
 });
+//sale route
+app.get ("/:user/inventory/:itemid/sale",function(req,res){
+    itemid=req.params.itemid
+    user=req.params.user
+    sql="update item set status='sold' where itemid=?"
+    db.query(sql,itemid,  function(err,results){
+        if(err)
+            console.log(err)
+        else
+        {
+            sql1="select * from bid where itemid=?"
+            db.query(sql1,itemid,function(err,results1){
+                if(err)
+                    console.log(err)
+                else
+                {
+                    highestbid=results1[0]
+                    sql2="insert into transaction set ?"
+                    transaction=
+                    {
+                        transactionid:Date.now().toString(),
+                        soldby:user,
+                        purchasedby:highestbid.placedby,
+                        bidid:highestbid.bidid,
+                        timestamp: Date.now(),
+                        itemid:itemid,
+                        value:highestbid.value
+                    }
+                    db.query(sql2,transaction,function(err,result2){
+                        if(err)
+                            console.log(err)
+                        else
+                            res.redirect("/"+user+"/transaction")
+                    });
+
+                }
+            })
+        }
+    })
+})
 
 //purcchase section
 app.get('/:user/purchase',function(req,res){
     user=req.params.user
-    sql="select * from item where userid !=?"
-    db.query(sql,user,function(err,results){
+    sql="select * from item where userid !=? and status='inpool' and itemid not in (select itemid from bid where placedby =?)  "
+    variables=[user,user]
+    db.query(sql,variables,function(err,results){
         if(err)
             console.log(err)
         else{
             console.log(results)
-            res.render("purchase.ejs",{list:results,user:user})//bids object add krna
+            res.render("purchase.ejs",{list:results,user:user})
         }
 
     })
 })
 app.post('/:user/purchase/newbid/:itemid',function(req,res){
     user=req.params.user
+    bid={ 
+      bidid:Date.now().toString(),
+      placedby:req.params.user,
+      itemid:req.params.itemid,
+      value:req.body.value
+    }  
+    sql="insert into bid set ? "
+    db.query(sql,bid,function(err,results){
+        if(err)
+            console.log(err)
+        else
+            {
+                console.log(results)
+                res.redirect("/"+user+"/purchase")
+            }
+    })
     
+});
+app.get("/:user/transaction", function(req,res){
+    user=req.params.user
+    sql="select * from transaction where soldby=? "
+    db.query(sql,user,function(err,results){
+        if(err)
+            console.log(err)
+        else{
+            console.log(results)
+            res.render("transaction.ejs",{transactions:results,user:user})
+        }
+    })
 })
 
 app.listen(3000, function () {

@@ -13,20 +13,24 @@
         <h4><%=item.item_name%></h4>
         <p><%=item.description%></p>
         <p><%=item.type%></p>
-        <h3><%=item.base_value%></h3>
+        <h3><%=item.market_value%></h3>
         <p>hello</p>
-        <button class="btn btn-success" onclick="dispform()">EDIT!</button>
     </div>
-    <div id="myform">
-        <!-- <form name="editform" method="POST" action="/<%=user%>/inventory/<%=item.itemid%>/edit">
-            <label for="name">Enter new name</label>
-            <input type="text" name="name" id="name">
-            <label for="desc">Enter your description</label>
-            <input type="text" name="desc" id="desc">
-            <button type="submit">go!</button> -->
-            <!-- <button onclick="submitform()"></button> -->
+    <div >
+        <ol>
+        <%bids.forEach(function(bid){%>
+            <li>placed by:<%=bid.placedby%>
+                value:<%=bid.value%>
+            </li>
+        <%});%>
+        </ol>
+    </div>
+    <div>
 
-        <!-- </form> -->
+        <button id ="salebutton" ><a href="/<%=user%>/inventory/<%=item.itemid%>/sale">sell!</a></button>
+    </div>
+        <button class="btn btn-success" onclick="dispform()">EDIT!</button>
+    <div id="myform">
         <div class="container mycontainer2 shadow-sm p-3 mb-5 bg-white rounded col">
             <form action="/<%=user%>/inventory/<%=item.itemid%>/edit" method="POST" id="form1">
                 <div class="form-group">
@@ -48,17 +52,33 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="base_value">base_value:</label>
-                    <input type="number" class="form-control" name="base_value" id="base_value"
-                        value=<%=item.base_value%>>
-
-                <button  class="btn btn-success " style="margin: auto;" >submit edit!</button>
-
-            </form>
+                    <label for="market_value">market_value:</label>
+                    <input type="number" class="form-control" name="market_value" id="market_value"
+                        value=<%=item.market_value%>>
+                    <%if(item.status=='sold'){%>
+                        <button id="edit button"  class="btn btn-success " style="margin: auto;" disabled="true" >submit edit!</button>
+                        
+                        <%}else{%>
+                        <button id="edit button"  class="btn btn-success " style="margin: auto;" disabled="false" >submit edit!</button>
+                            <%}%>
+         </form>
         </div>
     </div>
 </body>
 <script>
+    function sale(bids)
+    {
+        console.log(bids)
+        var  input1=document.createElement('input');
+         var sale1=document.getElementById("saleform")
+    input1.setAttribute('bid',bids[0].bidid)
+    input1.setAttribute('value',bids[0].value)
+    input1.setAttribute('placedby',bids[0].placedby)
+    sale1.appendChild(input1);
+    sale1.submit();
+
+
+}
 var form=document.getElementById("myform");
 form.style.display='none';
 function dispform(){

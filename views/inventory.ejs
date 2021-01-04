@@ -17,7 +17,7 @@
         <%items.forEach(function(item){%>
         <div class="container shadow-sm p-3 mb-5 bg-white rounded col">
             <li><%=item.item_name%> : <%=item.description%>:
-                <h3><%=item.base_value%></h3>
+                <h3><%=item.market_value%></h3>
                 <button class="btn btn-success">
                     <a href="/<%=user%>/inventory/<%=item.itemid%>">view more</a>
                 </button>
